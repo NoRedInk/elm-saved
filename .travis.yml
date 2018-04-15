@@ -27,14 +27,12 @@ install:
   - travis_retry elm-package install --yes
   - cd ..
 
-before_script:
-  - elm-verify-examples
-
 script:
   # Check if all exposed modules compile.
   - elm-package diff
   - elm-format --validate src
-  - elm test
+  - elm-verify-examples
+  # - elm-test
 
 notifications:
   email: false
