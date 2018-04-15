@@ -30,7 +30,7 @@ install:
 script:
   # Check if all exposed modules compile.
   - elm-package diff
-  - elm-format --validate src tests styleguide-app
+  - elm-format --validate src
   - elm-verify-examples
   - elm test
 
