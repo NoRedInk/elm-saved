@@ -18,6 +18,9 @@ module Saved
 {-| A type to keep track of a value that can be saved. It keeps track of the
 changes to a value since it was last saved.
 
+Internally the `Saved a` keeps track of two values: the last saved value and
+the current value.
+
 @docs Saved
 @docs new
 @docs value
@@ -60,7 +63,7 @@ type Saved a
 
 
 {-| Take a value and wrap it into a `Saved a`.
-This starting value is assumed to be the initial saved value.
+This initial value is marked as having been saved.
 
     new "Bear"
         |> saved --> True
@@ -71,7 +74,7 @@ new value =
     customNew (==) value
 
 
-{-| Get the current (unsaved) value from a `Saved a`.
+{-| Get the current value from a `Saved a`.
 
     new "Bear"
         |> value --> "Bear"
@@ -83,8 +86,7 @@ value (Saved _ _ latest) =
 
 
 {-| Modify the current value in your `Saved a` using a function.
-If the new value you return is different from the last saved value, your
-`Saved a` will start reporting it contains changes.
+This does not affect the last saved value.
 
     new "Bear"
         |> change (\animal -> animal ++ "s")
