@@ -32,7 +32,7 @@ script:
   - elm-package diff
   - elm-format --validate src
   - elm-verify-examples
-  # - elm-test
+  - elm-test
 
 notifications:
   email: false
