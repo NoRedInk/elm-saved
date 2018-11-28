@@ -1,4 +1,4 @@
-module Spec.Saved exposing (..)
+module Spec.Saved exposing (afterSaveItsSaved, changeValueDuality, customNew, discardSetsUsBack, initialValue, mapCompose1, mapCompose2, mapIdentity1, mapIdentity2, newValueDuality, saved, savedChecksEquality, savedDoesNotAlterValue, setSavedChangesInitialValue, setSavedDoesNotAlterValue, updateValueDuality)
 
 import Expect
 import Fuzz exposing (Fuzzer)
@@ -93,21 +93,21 @@ discardSetsUsBack =
 setSavedChangesInitialValue : Test
 setSavedChangesInitialValue =
     fuzz2 Fuzz.string Fuzz.string "`setSaved` changes the initial value" <|
-        \initial saved ->
+        \initial saved_ ->
             Saved.new initial
-                |> Saved.setSaved saved
+                |> Saved.setSaved saved_
                 |> Saved.discard
                 |> Saved.value
-                |> Expect.equal saved
+                |> Expect.equal saved_
 
 
 setSavedDoesNotAlterValue : Test
 setSavedDoesNotAlterValue =
     fuzz3 Fuzz.string Fuzz.string Fuzz.string "`setSaved` does not change the current value" <|
-        \initial changed saved ->
+        \initial changed saved_ ->
             Saved.new initial
                 |> Saved.change (\_ -> changed)
-                |> Saved.setSaved saved
+                |> Saved.setSaved saved_
                 |> Saved.value
                 |> Expect.equal changed
 
@@ -189,6 +189,6 @@ customNew =
 
 
 initialValue : Saved a -> a
-initialValue saved =
-    Saved.discard saved
+initialValue saved_ =
+    Saved.discard saved_
         |> Saved.value
