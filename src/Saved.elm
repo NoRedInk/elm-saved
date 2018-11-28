@@ -1,19 +1,18 @@
-module Saved
-    exposing
-        ( Eq
-        , Saved
-        , change
-        , customMap
-        , customNew
-        , discard
-        , map
-        , new
-        , save
-        , saved
-        , setSaved
-        , update
-        , value
-        )
+module Saved exposing
+    ( Saved
+    , new
+    , value
+    , change
+    , save
+    , discard
+    , saved
+    , setSaved
+    , update
+    , map
+    , Eq
+    , customNew
+    , customMap
+    )
 
 {-| A type to keep track of a value that can be saved. It keeps track of the
 changes to a value since it was last saved.
@@ -70,8 +69,8 @@ This initial value is marked as having been saved.
 
 -}
 new : a -> Saved a
-new value =
-    customNew (==) value
+new a =
+    customNew (==) a
 
 
 {-| Get the current value from a `Saved a`.
@@ -108,6 +107,7 @@ change fn (Saved eq initial latest) =
         newInitial =
             if eq initial newLatest then
                 newLatest
+
             else
                 initial
     in
@@ -119,9 +119,9 @@ produce a command. This is typically useful in the `update` function of your
 program.
 -}
 update : (a -> ( a, cmd )) -> Saved a -> ( Saved a, cmd )
-update updateFn saved =
-    updateFn (value saved)
-        |> Tuple.mapFirst (\x -> change (always x) saved)
+update updateFn saved_ =
+    updateFn (value saved_)
+        |> Tuple.mapFirst (\x -> change (always x) saved_)
 
 
 {-| Save the current value.
@@ -200,8 +200,8 @@ and so is `a -> a`, you probably don't want to use this.
 
 -}
 map : (a -> b) -> Saved a -> Saved b
-map fn saved =
-    customMap (==) fn saved
+map fn saved_ =
+    customMap (==) fn saved_
 
 
 {-| Alias for an equality function used to tell if two values are equal.
@@ -215,8 +215,8 @@ type alias Eq a =
 {-| Like `new`, but allowing you to specify an equality function.
 -}
 customNew : Eq a -> a -> Saved a
-customNew eq value =
-    Saved eq value value
+customNew eq value_ =
+    Saved eq value_ value_
 
 
 {-| Like `map`, but allowing you to specify a new equality function for the new
